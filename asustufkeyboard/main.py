@@ -11,6 +11,7 @@ class CommandMixin:
     def set_state(self):
         boot, awake, sleep = [int(b.isChecked()) for b in self.state_buttons]
         command = f"echo '1 {boot} {awake} {sleep} 1' > /sys/class/leds/asus::kbd_backlight/kbd_rgb_state"
+        print(command)
         subprocess.run(command, shell=True)
 
     def set_brightness(self):
@@ -18,15 +19,18 @@ class CommandMixin:
             next(button for button in self.brightness_buttons if button.isChecked())
         )
         command = f"echo {brightness} > /sys/class/leds/asus::kbd_backlight/brightness"
+        print(command)
         subprocess.run(command, shell=True)
 
     def set_mode_color_speed(self, *args, **kwargs):
         mode = self.mode_buttons.index(next(button for button in self.mode_buttons if button.isChecked()))
-        red = self.color_chooser.color_dialog.currentColor().red()
-        green = self.color_chooser.color_dialog.currentColor().green()
-        blue = self.color_chooser.color_dialog.currentColor().blue()
+        current_color = self.color_chooser.color_dialog.currentColor()
+        red = current_color.red()
+        green = current_color.green()
+        blue = current_color.blue()
         speed = self.speed_buttons.index(next(button for button in self.speed_buttons if button.isChecked()))
         command = f"echo '1 {mode} {red} {green} {blue} {speed}' > /sys/class/leds/asus::kbd_backlight/kbd_rgb_mode"
+        print(command)
         subprocess.run(command, shell=True)
 
 
