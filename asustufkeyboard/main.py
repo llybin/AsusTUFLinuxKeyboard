@@ -93,6 +93,8 @@ class MainWindow(QWidget, CommandMixin, StateButtons, BrightnessButtons, ModeBut
         # Set layout
 
         self.setLayout(main_layout)
+        self.set_state()
+        self.set_brightness()
         self.set_mode_color_speed()
 
 
